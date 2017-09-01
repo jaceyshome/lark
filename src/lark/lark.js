@@ -4,16 +4,9 @@
  *
  */
 var lark = (function () {
-    //Expression {{}} regular expression
-    var EXPRESSION_REGEXP = /({{\s*?.+?\s*?}})/ig;
-
-    //Private parameters
-    var lark = {},
-        _entityTotal = 0,        //count the total entities
-        _$mainContainer = null,
-        _rootScope = null,
-        _components = [],
-        _services = {};
+    var lark = {}, entityTotal = 0,
+        $mainContainer = null, _rootScope = null,
+        components = [], services = {};
 
     /**
      * Root scope is public but read only
@@ -45,7 +38,7 @@ var lark = (function () {
      *
      */
     lark.addApp = function (elementId) {
-        _$mainContainer = document.getElementById(elementId);
+        $mainContainer = document.getElementById(elementId);
         _rootScope = new Scope(generateUID());
     };
 
@@ -198,7 +191,7 @@ var lark = (function () {
     lark.addComponent = function (name, args) {
         var _fn = args.pop(),
             _argServices = getServicesFromNames(args);
-        _components.push({
+        components.push({
             name: name,
             attr: name.replace(/([A-Z])/g, "-$1").toLowerCase(),
             fn: _fn.apply(this, _argServices)
@@ -236,38 +229,36 @@ var lark = (function () {
     lark.addService = function (name, args) {
         var _fn = args.pop(),
             _argServices = getServicesFromNames(args);
-        _services[name] = Service.call(_fn.apply(this, _argServices), generateUID());
-        return _services[name];
+        services[name] = Service.call(_fn.apply(this, _argServices), generateUID());
+        return services[name];
     };
 
     /**
      * Run the lark to setup the application, normally call this function after target dom element is loaded
      */
     lark.run = function () {
-        setPublicServices();
+        setPublicServers();
         //build the scope tree structure
-        loopElements(createScope(_rootScope), _$mainContainer.children);
+        loopElements(createScope(_rootScope), $mainContainer.children);
     };
 
     lark.bindMatchedComponents = bindMatchedComponents;
     lark.createScope = createScope;
     lark.generateUID = generateUID;
 
-
-
     //---------------------- Private helpers ---------------------
     /**
      * Create public services, which can be used for all components
      */
-    function setPublicServices() {
-        lark.$refresh = _services["$refresh"];
-        lark.$cache = _services["$cache"];
-        lark.$expression = _services["$expression"];
+    function setPublicServers() {
+        lark.$refresh = services["$refresh"];
+        lark.$cache = services["$cache"];
+        lark.$expression = services["$expression"];
     }
 
     function generateUID() {
-        var id = "_" + _entityTotal;
-        _entityTotal += 1;
+        var id = "_" + entityTotal;
+        entityTotal += 1;
         return id;
     }
 
@@ -277,7 +268,7 @@ var lark = (function () {
             return [];
         }
         for (var i = 0, length = objNames.length; i < length; i++) {
-            _objects.push(_services[objNames[i]]);
+            _objects.push(services[objNames[i]]);
         }
         return _objects;
     }
@@ -301,12 +292,11 @@ var lark = (function () {
      * @param {Element} element - dom element
      */
     function bindMatchedComponents(scope, element) {
-        //Find the matched component from the element attribute and bind the scope on it
-        for (var i = 0, comLength = _components.length; i < comLength; i++) {
-            if (element.hasAttribute(_components[i].attr) ||
-                element.hasAttribute("data-" + _components[i].attr)) {
+        for (var i = 0, comLength = components.length; i < comLength; i++) {
+            if (element.hasAttribute(components[i].attr) ||
+                element.hasAttribute("data-" + components[i].attr)) {
                 //returning scope will be a child
-                scope = bindComponent(scope, element, _components[i]);
+                scope = bindComponent(scope, element, components[i]);
             }
         }
 
@@ -390,7 +380,7 @@ var lark = (function () {
         //Watch the child text node changes
         element.childNodes && Array.prototype.forEach.call(element.childNodes, function (node) {
             //only care about text node
-            if (node.nodeType === TEXT_NODE_TYPE) {
+            if (node.nodeType == TEXT_NODE_TYPE) {
                 //it is text node, need to wrap with span
                 watchChildNode(scope, element, node);
             }
@@ -405,23 +395,20 @@ var lark = (function () {
      */
     function watchChildNode(scope, element, node) {
         //Check whether the element has the expression
-        var results = node.textContent.match(EXPRESSION_REGEXP);
+        var results = node.textContent.match(/{{\s*?(.+?)\s*?}}/ig);
         if (results != null) {
             //It using the expression as the key, return the function to the watcher,
             //so once the node text change, scope.$watch will execute the function
             scope.$watch(results, (function (element, node) {
                 //Cache the old value
-                var oldVals;
-                var originalTextContent = node.textContent;
-
-                //Apply the new value to the node text content
+                var oldVals, originalTextContent = node.textContent;
                 return function (newVals) {
                     var newTextContent = originalTextContent;
 
                     //Update the old value if it doesn't equal the new value
-                    if (newVals !== oldVals) {
+                    if (newVals != oldVals) {
                         newVals.forEach(function (newVal) {
-                            newTextContent = newTextContent.replace(EXPRESSION_REGEXP, newVal !== undefined ? newVal : '');
+                            newTextContent = newTextContent.replace(/({{\s*?.+?\s*?}})/i, newVal != undefined ? newVal : '');
                         });
                         node.textContent = newTextContent;
                         oldVals = newVals;
@@ -439,7 +426,7 @@ var lark = (function () {
      */
     function watchElementAttribute(scope, element, attr) {
         //Check whether the element has the expression
-        var results = attr.value.match(EXPRESSION_REGEXP), oldVal;
+        var results = attr.value.match(/{{\s*?(.+?)\s*?}}/ig), oldVal;
         if (results != null) {
             scope.$watch(results, (function (attr) {
                 var oldVals, originalValue = attr.value;
@@ -447,9 +434,9 @@ var lark = (function () {
                 //Apply the new value to the element attribute
                 return function (newVals) {
                     var newValue = originalValue;
-                    if (newVals !== oldVals) {
+                    if (newVals != oldVals) {
                         newVals.forEach(function (newVal) {
-                            newValue = newValue.replace(EXPRESSION_REGEXP, newVal !== undefined ? newVal : '');
+                            newValue = newValue.replace(/({{\s*?.+?\s*?}})/i, newVal != undefined ? newVal : '');
                         });
                         attr.value = newValue;
                         oldVals = newVals;

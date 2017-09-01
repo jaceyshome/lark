@@ -2,6 +2,7 @@
 # General
 # --------------------------------------------
 deploy
+dist
 reports
 .idea
 bower_components
