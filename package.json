@@ -1,0 +1,19 @@
+{
+  "name": "lark",
+  "version": "1.0.0",
+  "description": "Javascript framework",
+  "main": "lark.js",
+  "scripts": {
+    "test": "chimp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/jaceyshome/lark.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Jake Wang",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/jaceyshome/lark#readme"
+}
