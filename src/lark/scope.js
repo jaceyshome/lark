@@ -1,5 +1,17 @@
 /**
- * Scope class Constructor
+ * Scope
+ * Scope is the model of the MVC architecture
+ *
+ * ###Initial private properties###
+ *
+ * __id - unique id
+ * _$$watchers - a collection of registered watchers
+ * _$$events - a collection of registered events
+ *
+ * ###Initial public properties###
+ * $$parent - parent scope
+ * $$children - a collection of child scopes
+ *
  * @param {String} id - unique id of the scope
  * @returns {Object} scope - an instance of Scope
  * @constructor
@@ -33,7 +45,7 @@ Scope.prototype.extend = function (obj) {
 };
 
 /**
- * Update the view
+ * Update the dom tree with new values
  */
 Scope.prototype.$update = function () {
     lark.$refresh.loop();
@@ -93,6 +105,9 @@ Scope.prototype.$watch = function (expression, fn) {
     this.$update();
 };
 
+/**
+ * Execute watchers
+ */
 Scope.prototype.$execWatchers = function () {
     var watchers = this._$$watchers, watcher;
     if (watchers && watchers.length > 0) {
@@ -109,19 +124,61 @@ Scope.prototype.$execWatchers = function () {
 Scope.prototype.$removeWatcher = function () {
 };
 
+
+/**
+ * Destroy the dom and register events
+ */
 Scope.prototype.$destroy = function () {
+    //Delete all references and properties before remove this scope from the scope tree,
+    //If remove this scope without removing the references of other scope objects, it may cause
+    //memory leak
     for (var key in this) {
         if (this.hasOwnProperty(key)) {
             delete this[key];
         }
     }
+    //Remove the scope from the scope tree
     (this.$$parent != null) && this.$$parent.$removeChild(this);
 };
 
+/**
+ * Remove the scope from the scope tree
+ * @param {!Object} childScope
+ * @example
+ * ScopeA trees
+ *
+ *      ScopeA
+ *       /   \
+ *  ScopeB  ScopeC
+ *
+ * After calling ScopeA.$removeChild(ScopeC);
+ *
+ *      ScopeA
+ *      /
+ *  ScopeB
+ *
+ */
 Scope.prototype.$removeChild = function (childScope) {
     this.$$children.splice(this.$$children.indexOf(childScope), 1);
 };
 
+/**
+ * Add unique child scope to this scope
+ * @param {!Object} childScope
+ * @example
+ * ScopeA trees
+ *
+ *      ScopeA
+ *      /
+ *  ScopeB
+ *
+ * After calling ScopeA.$addChild(ScopeC);
+ *
+ *      ScopeA
+ *       /   \
+ *  ScopeB  ScopeC
+ *
+ */
 Scope.prototype.$addChild = function (childScope) {
     if (typeof this.$$children == undefined) {
         this.$$children = [];
@@ -131,14 +188,38 @@ Scope.prototype.$addChild = function (childScope) {
     }
 };
 
+/**
+ * Get the expression {{}} mapping value with the corresponding scope property
+ * @param {String} exp - expression
+ * @example
+ *
+ * scopeA = {
+ *      name: "Hello World"
+ * }
+ *
+ * scopeA.$getExpValue("{{name}}");
+ *
+ * It will return "Hello World"
+ */
 Scope.prototype.$getExpValue = function (exp) {
     return lark.$expression.$get(this, exp);
 };
 
+/**
+ * Set expression {{}} mapping value
+ * @param {String} exp - expression
+ * @param {*} value - value
+ */
 Scope.prototype.$setExpValue = function (exp, value) {
     lark.$expression.$set(this, exp, value);
 };
 
+/**
+ * Register event handler
+ * @param {String} eventName - register event name
+ * @param {Function} fn - event handler
+ * @returns {Function} fn - event handler
+ */
 Scope.prototype.$on = function (eventName, fn) {
     this._$$events.push({
         name: eventName,
@@ -147,6 +228,11 @@ Scope.prototype.$on = function (eventName, fn) {
     return fn;
 };
 
+/**
+ * Emit event from this scope to the child scopes
+ * @param {String} eventName - Event name
+ * @param {*} data -
+ */
 Scope.prototype.$emit = function (eventName, data) {
     this._$$events.forEach(function (event) {
         if (event.name === eventName && typeof event.fn === 'function') {
@@ -158,10 +244,20 @@ Scope.prototype.$emit = function (eventName, data) {
     });
 };
 
+/**
+ * Broadcast event from the top root scope
+ * @param {String} eventName - event name
+ * @param {*} data - handling data
+ */
 Scope.prototype.$broadcast = function (eventName, data) {
     lark.$rootScope.$emit(eventName, data);
 };
 
+/**
+ * Remove event from the events' collection
+ * @param {String} eventName - event name
+ * @param {Function} fn - event function
+ */
 Scope.prototype.$off = function (eventName, fn) {
     var index;
     if (!!fn) {

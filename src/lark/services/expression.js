@@ -1,7 +1,17 @@
 /**
- * Expression service
+ * Service Expression
+ * Expression {{}} is use for the html page to present the model value
  *
- * It interprets the expression {{}} in the vew template
+ * ###Principles###
+ * It support object and function mapping
+ *
+ * {{cats[0].fn('name',obj.key)}}
+ * {{cat.key.name}}
+ *
+ * It doesn't support mathematical markup
+ * {{2+2=4}}
+ * {{number1 + number2}}
+ *
  */
 lark.addService('$expression', ["$cache", function ($cache) {
 
@@ -12,9 +22,9 @@ lark.addService('$expression', ["$cache", function ($cache) {
     var reEscapeChar = /\\(\\)?/g;
     var service = {}, cache = {};
 
-    /*
+    /**
      * Get the value from object property paths
-     * Support:
+     * supports
      * {{cats[0].fn('name',obj.key)}}
      * {{cat.key.name}}
      * Doesn't support {{2+2=4}}
@@ -40,7 +50,13 @@ lark.addService('$expression', ["$cache", function ($cache) {
         return getValue(obj, toPath(exp));
     };
 
-
+    /**
+     * Set value to the expression
+     * @param {Object} object - model object
+     * @param {String} exp - expression
+     * @param {*} value - value needs to set
+     * @returns {*}
+     */
     service.$set = function (object, exp, value) {
         if (object == null) {
             return object;
@@ -74,6 +90,7 @@ lark.addService('$expression', ["$cache", function ($cache) {
         return object;
     };
 
+    //-------------------------- Helpers ---------------------------
     function isIndex(value, length) {
         value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
         length = length == null ? MAX_SAFE_INTEGER : length;
