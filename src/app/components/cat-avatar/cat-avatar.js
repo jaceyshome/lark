@@ -4,13 +4,7 @@ lark.addComponent('catAvatar', ['catService', function (catService) {
             scope: {
                 cat: "="
             },
-            template: '<div class="cat-avatar-container" data-js-mouseover="mouseOver()" data-js-mouseout="mouseOut()">' +
-            '<a class="image-button" href="javascript:void(0);" data-js-click="clickImage()">' +
-            '<img data-js-src="{{cat.src}}" alt="cat image"/>' +
-            '<span class="text">{{cat.name}}</span>' +
-            '</a>' +
-            '<button class="delete-button" data-js-click="removeMe()">delete</button>' +
-            '</div>',
+            templateId: "component-cat-avatar-template",
             link: (function ($scope, $element) {
                 $scope.clickImage = function (e) {
                     catService.currentCat = $scope.cat;

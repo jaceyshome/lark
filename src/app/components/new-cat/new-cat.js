@@ -2,13 +2,7 @@ lark.addComponent('newCat', ['catService', function (catService) {
     return function () {
         return {
             scope: {},
-            template: '<div>' +
-            '<button data-js-click="add()" class="adminButton">add</button>' +
-            '<div class="new-cat-container">' +
-            '<input data-js-model="newCat.name" placeholder="name"/>' +
-            '<input data-js-model="newCat.src" placeholder="src"/>' +
-            '</div>' +
-            '</div>',
+            templateId: "component-new-cat-template",
             link: (function ($scope, $element) {
 
                 function reset() {

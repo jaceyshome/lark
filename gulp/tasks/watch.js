@@ -18,6 +18,7 @@ function watchAndRun(dir, tasks) {
 gulp.task('watch', ['serve'], function () {
     watchAndRun(config.lark.src, ['build-lark']);
     watchAndRun(config.app.src, ['build-app']);
+    watchAndRun(config.app.template.src, ['build-app-templates']);
     watchAndRun(config.demo.src, ['copy-demo']);
     watchAndRun(config.assets.src, ['copy-assets']);
     watchAndRun(config.template.src, ['copy-src-template']);

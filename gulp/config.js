@@ -27,13 +27,24 @@ module.exports = {
     },
 
     app: {
-        src: appRoot + "app/**/*.js",
-        dest: outputRoot + "app"
+        src: [
+            "src/app/app.js" ,
+            "src/app/services/catService.js" ,
+
+            "src/app/components/**/*.js" 
+        ],
+        dest: outputRoot + "app",
+        template: {
+            src: [
+                "src/app/components/**/*.html"
+            ],
+            dest: outputRoot + 'app/'
+        }
     },
 
     assets: {
         src: appRoot + "assets/**/*",
-        dest: outputRoot + "assets"
+        dest: outputRoot + 'assets/'
     },
 
     demo : {

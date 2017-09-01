@@ -238,6 +238,8 @@ var lark = (function () {
      */
     lark.run = function () {
         setPublicServers();
+        //collect all templates
+        lark.$template.init($mainContainer);
         //build the scope tree structure
         loopElements(createScope(_rootScope), $mainContainer.children);
     };
@@ -252,6 +254,7 @@ var lark = (function () {
      */
     function setPublicServers() {
         lark.$refresh = services["$refresh"];
+        lark.$template = services["$template"];
         lark.$cache = services["$cache"];
         lark.$expression = services["$expression"];
     }
@@ -292,6 +295,9 @@ var lark = (function () {
      * @param {Element} element - dom element
      */
     function bindMatchedComponents(scope, element) {
+        if(element == undefined){
+            return;
+        }
         for (var i = 0, comLength = components.length; i < comLength; i++) {
             if (element.hasAttribute(components[i].attr) ||
                 element.hasAttribute("data-" + components[i].attr)) {
@@ -328,6 +334,7 @@ var lark = (function () {
                     scope: {
 
                     },
+                    templateId: ""
                     template: "<div>{{displayHello}} {{displayWorld}}</div>",
 
                     link: (function ($scope, $element) {
@@ -355,8 +362,15 @@ var lark = (function () {
             }
             scope.extend(_scope);
         }
+        /**
+         * template and template id principle
+         * If template exists, use template, otherwise uses templateId
+         */
         if (_component.template) {
             element.innerHTML = _component.template;
+        }
+        if (_component.templateId) {
+            element.innerHTML = lark.$template.get(_component.templateId);
         }
         _component.link(scope, element);
         return scope;

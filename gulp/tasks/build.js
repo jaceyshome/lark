@@ -12,10 +12,17 @@ gulp.task('build-lark', function() {
         .pipe(gulp.dest(config.lark.dest));
 });
 
-//Copy app source files into dist app folder
+//Concat app source files into dist app folder
 gulp.task('build-app', function() {
     return gulp.src(config.app.src)
+        .pipe(concat('app.js'))
         .pipe(gulp.dest(config.app.dest));
+});
+
+gulp.task('build-app-templates', function() {
+    return gulp.src(config.app.template.src)
+        .pipe(concat('templates.html'))
+        .pipe(gulp.dest(config.app.template.dest));
 });
 
 //Copy unmodified assets
@@ -28,7 +35,7 @@ gulp.task('copy-assets', function () {
 gulp.task('build', function (callback) {
     return runSequence(
         'clean',
-        ['build-lark', 'build-app', 'build-template', 'copy-assets'],
+        ['build-lark', 'build-app', 'build-app-templates', 'build-template', 'copy-assets'],
         callback
     );
 });
