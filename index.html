@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cat Clicker</title>
+  <link rel="stylesheet" href="main.css" type="text/css">
+</head>
+<body>
+  <div class="container" id="mainContainer">
+    <h1>Cat Clicker</h1>
+    <div class="block-container left">
+      <div data-cat-list class="catListContainer"></div>
+      <div data-new-cat class="newcat-container"></div>
+    </div>
+    <div data-cat-container class="block-container right"></div>
+  </div>
+  <!------------------- framework ------------------------------->
+  <script src="src/lark/lark.js" type="text/javascript"></script>
+  <script src="src/lark/service.js" type="text/javascript"></script>
+  <script src="src/lark/expression.js" type="text/javascript"></script>
+  <script src="src/lark/refresh.js" type="text/javascript"></script>
+  <script src="src/lark/scope.js" type="text/javascript"></script>
+  <script src="src/lark/js-repeat.js" type="text/javascript"></script>
+  <script src="src/lark/js-src.js" type="text/javascript"></script>
+  <script src="src/lark/js-model.js" type="text/javascript"></script>
+  <script src="src/lark/js-events.js" type="text/javascript"></script>
+  <script src="src/lark/js-show.js" type="text/javascript"></script>
+  <script src="src/lark/js-hide.js" type="text/javascript"></script>
+  <script src="src/lark/js-if.js" type="text/javascript"></script>
+
+  <!------------------------- app  ------------------------------->
+  <script src="src/app/app.js" type="text/javascript"></script>
+  <script src="src/app/services/catService.js" type="text/javascript"></script>
+  <script src="src/app/components/cat-container.js" type="text/javascript"></script>
+  <script src="src/app/components/cat-avatar.js" type="text/javascript"></script>
+  <script src="src/app/components/cat-list.js" type="text/javascript"></script>
+  <script src="src/app/components/new-cat.js" type="text/javascript"></script>
+  <script src="src/app/components/expression-test.js" type="text/javascript"></script>
+</body>
+</html>
