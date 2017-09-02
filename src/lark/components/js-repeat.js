@@ -1,7 +1,8 @@
 /**
- * Handle collection of array
+ * Data-js-repeat
+ *
+ * it instantiates a template once per item from a collection. Each template instance gets its own scope, where the given loop variable is set to the current collection item, and $index is set to the item index or key.
  * @example
- * Expression in the list
  * <ul>
  *      <li data-js-repeat="task in tasks" >
  *          <p>{{task.name}}</p>
