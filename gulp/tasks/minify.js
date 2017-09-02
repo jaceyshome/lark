@@ -11,7 +11,7 @@ gulp.task('minify-js', function () {
             minify({
                 ext:{
                     src:'.js',
-                    min:'min.js'
+                    min:'.min.js'
                 },
                 exclude: ['app'],
                 ignoreFiles: ['.combo.js', '-min.js']
