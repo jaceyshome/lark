@@ -58,5 +58,10 @@ module.exports = {
         sitePathValueVariable: '<%=sitePathValue%>',
         ssiIncludeVariable: "${sitePath}",
         assetSitePathVariable: '<!--#echo var="sitePath" -->'
+    },
+
+    minify: {
+        src: outputRoot + "**/*.js",
+        dest: outputRoot
     }
 };
