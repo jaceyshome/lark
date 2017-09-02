@@ -17,7 +17,7 @@ module.exports = function() {
     this.Given(/^[aATt][nhe]{0,} ([a-zA-Z ]*) page$/, function(pageName) {
 
         //Set viewport size always to the default size at the start.
-        ViewPort.resetToInitialSize();
+        // ViewPort.resetToInitialSize();
         SiteSupport.goToPage(pageName);
         let doesExist = browser.waitForExist("body");
         expect(doesExist).toBe(true);

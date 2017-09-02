@@ -11,7 +11,7 @@ export class SiteSupport {
     }
 
     static getPage(pageName) {
-        return  `${SiteSupport.getBaseUrl()}${siteConstants.TESTPAGES[_.camelCase(pageName)] || siteConstants.TESTPAGES.testDefault}.html`;
+        return  `${SiteSupport.getBaseUrl()}${siteConstants.TESTPAGES[_.camelCase(pageName)] || siteConstants.TESTPAGES.testDefault}`;
     }
 
     static getBaseUrl() {
