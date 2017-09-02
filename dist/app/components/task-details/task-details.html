@@ -1,6 +1,3 @@
-<script type="text/x-lark-template" id="component-new-task-template" >
-    <button type="button" class="btn btn-primary" data-js-click="create()">Create</button>
-</script>
 <script type="text/x-lark-template" id="component-task-details-template">
 
     <form data-js-if="currentTask">
@@ -27,27 +24,4 @@
 
 </script>
 
-
-
-<script type="text/x-lark-template" id="component-task-avatar-template">
-
-    <div class="row">
-
-        <a class="col-8 btn btn-outline-primary" href="javascript:void(0);" data-js-click="editTask()">
-            <span class="text">{{task.name}}</span>
-        </a>
-
-        <div class="col-4">
-            <button type="button" class="btn btn-secondary" data-js-click="removeMe()">Delete</button>
-        </div>
-
-    </div>
-
-</script>
-
-<script type="text/x-lark-template" id="component-task-list-template">
-    <div class="container">
-        <div data-js-repeat="task in tasks" data-task-avatar data-task="task" style="margin-bottom: 20px;"></div>
-    </div>
-</script>
 

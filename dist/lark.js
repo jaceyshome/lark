@@ -717,7 +717,6 @@ lark.addService('$template', [function () {
         Array.prototype.forEach.call(list, function(template){
             add(template.id, template.innerHTML);
         });
-        console.log("templates", templates);
     };
 
     /**
@@ -857,10 +856,11 @@ Scope.prototype.$execWatchers = function () {
     }
 };
 
-/*
-    TODO: Add function to remove watchers
-*/
+/**
+ * Remove watchers
+ */
 Scope.prototype.$removeWatcher = function () {
+    this._$$watchers = null;
 };
 
 
@@ -871,13 +871,19 @@ Scope.prototype.$destroy = function () {
     //Delete all references and properties before remove this scope from the scope tree,
     //If remove this scope without removing the references of other scope objects, it may cause
     //memory leak
+
     for (var key in this) {
         if (this.hasOwnProperty(key)) {
+            this[key] = null;
             delete this[key];
         }
     }
+    this.$off();
+    this.$removeWatcher();
+
     //Remove the scope from the scope tree
     (this.$$parent != null) && this.$$parent.$removeChild(this);
+
 };
 
 /**
@@ -978,6 +984,9 @@ Scope.prototype.$emit = function (eventName, data) {
             event.fn(data);
         }
     });
+    if(!this.$$children || this.$$children.length === 0){
+        return;
+    }
     this.$$children.forEach(function (child) {
         child.$emit(eventName, data);
     });
@@ -1006,6 +1015,9 @@ Scope.prototype.$off = function (eventName, fn) {
                 break;
             }
         }
+    }
+    if(!eventName){
+        this._$$events = null;
     }
     if (index != null) {
         this._$$events.splice(index, 1);
@@ -1102,6 +1114,7 @@ lark.addComponent('jsModel', [function () {
                             $scope.$update();
                         }
                         oldValue = e.target.value;
+                        e.target.focus();
                     };
                 })());
             })
@@ -1111,9 +1124,10 @@ lark.addComponent('jsModel', [function () {
 
 
 /**
- * Handle collection of array
+ * Data-js-repeat
+ *
+ * it instantiates a template once per item from a collection. Each template instance gets its own scope, where the given loop variable is set to the current collection item, and $index is set to the item index or key.
  * @example
- * Expression in the list
  * <ul>
  *      <li data-js-repeat="task in tasks" >
  *          <p>{{task.name}}</p>
@@ -1234,7 +1248,7 @@ lark.addComponent('jsRepeat', [function () {
                                 }
                                 for (var i = 0, len = children.length; i < len; i++) {
                                     child = children[i];
-                                    if (items.indexOf(child[itemKey]) < 0) {
+                                    if (child != undefined && items.indexOf(child[itemKey]) < 0) {
                                         hasChanged = true;
                                         delete child[itemsKey];
                                         delete child[itemKey];
