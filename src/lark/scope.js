@@ -118,10 +118,11 @@ Scope.prototype.$execWatchers = function () {
     }
 };
 
-/*
-    TODO: Add function to remove watchers
-*/
+/**
+ * Remove watchers
+ */
 Scope.prototype.$removeWatcher = function () {
+    this._$$watchers = null;
 };
 
 
@@ -132,13 +133,19 @@ Scope.prototype.$destroy = function () {
     //Delete all references and properties before remove this scope from the scope tree,
     //If remove this scope without removing the references of other scope objects, it may cause
     //memory leak
+
     for (var key in this) {
         if (this.hasOwnProperty(key)) {
+            this[key] = null;
             delete this[key];
         }
     }
+    this.$off();
+    this.$removeWatcher();
+
     //Remove the scope from the scope tree
     (this.$$parent != null) && this.$$parent.$removeChild(this);
+
 };
 
 /**
@@ -239,6 +246,9 @@ Scope.prototype.$emit = function (eventName, data) {
             event.fn(data);
         }
     });
+    if(!this.$$children || this.$$children.length === 0){
+        return;
+    }
     this.$$children.forEach(function (child) {
         child.$emit(eventName, data);
     });
@@ -267,6 +277,9 @@ Scope.prototype.$off = function (eventName, fn) {
                 break;
             }
         }
+    }
+    if(!eventName){
+        this._$$events = null;
     }
     if (index != null) {
         this._$$events.splice(index, 1);
