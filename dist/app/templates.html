@@ -1,0 +1,47 @@
+<script type="text/x-lark-template" id="component-cat-avatar-template">
+
+    <div class="cat-avatar-container" data-js-mouseover="mouseOver()" data-js-mouseout="mouseOut()">
+        <a class="image-button" href="javascript:void(0);" data-js-click="clickImage()">
+            <img data-js-src="{{cat.src}}" alt="cat image"/>
+            <span class="text">{{cat.name}}</span>
+        </a>
+        <button class="delete-button" data-js-click="removeMe()">delete</button>
+    </div>
+
+</script>
+
+<script type="text/x-lark-template" id="component-cat-container-template">
+
+    <div data-js-if="catService.currentCat">
+        <h3>{{catService.currentCat.name}}</h3>
+        <a href="javascript:void(0);" data-js-click="clickImage()">
+            <img data-js-src="{{catService.currentCat.src}}" alt="cat image for {{catService.currentCant.name}}"/>
+            <span>{{catService.currentCat.name}} has been clicked by {{catService.currentCat.counter}} times</span>
+        </a>
+    </div>
+    <button data-js-click="toggle()" class="adminButton">edit</button>
+    <div class="admin-container" data-js-show="showAdmin" >
+        <input data-js-model="catService.currentCat.name" placeholder="name"/>
+        <input data-js-model="catService.currentCat.src" placeholder="src"/>
+        <input data-js-model="catService.currentCat.counter" placeholder="counter"/>
+    </div>
+
+</script>
+
+
+
+<script type="text/x-lark-template" id="component-cat-list-template">
+    <div data-js-repeat="cat in cats" data-cat-avatar data-cat="cat"></div>
+</script>
+
+
+<script type="text/x-lark-template" id="component-new-cat-template" >
+    <div>
+        <button data-js-click="add()" class="adminButton">add</button>
+        <div class="new-cat-container">
+            <input data-js-model="newCat.name" placeholder="name"/>
+            <input data-js-model="newCat.src" placeholder="src"/>
+        </div>
+    </div>
+
+</script>

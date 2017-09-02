@@ -1,0 +1,19 @@
+<script type="text/x-lark-template" id="component-cat-container-template">
+
+    <div data-js-if="catService.currentCat">
+        <h3>{{catService.currentCat.name}}</h3>
+        <a href="javascript:void(0);" data-js-click="clickImage()">
+            <img data-js-src="{{catService.currentCat.src}}" alt="cat image for {{catService.currentCant.name}}"/>
+            <span>{{catService.currentCat.name}} has been clicked by {{catService.currentCat.counter}} times</span>
+        </a>
+    </div>
+    <button data-js-click="toggle()" class="adminButton">edit</button>
+    <div class="admin-container" data-js-show="showAdmin" >
+        <input data-js-model="catService.currentCat.name" placeholder="name"/>
+        <input data-js-model="catService.currentCat.src" placeholder="src"/>
+        <input data-js-model="catService.currentCat.counter" placeholder="counter"/>
+    </div>
+
+</script>
+
+

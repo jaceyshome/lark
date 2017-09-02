@@ -1,0 +1,24 @@
+<!--#set var="sitePath" value="../" -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Cat Clicker</title>
+    <!--#include virtual="${sitePath}demo/partials/head-libs.html" -->
+</head>
+
+<body>
+<div class="container" id="mainContainer">
+    <h1>Cat Clicker</h1>
+    <div class="block-container left">
+        <div data-cat-list class="catListContainer"></div>
+        <div data-new-cat class="newcat-container"></div>
+    </div>
+    <div data-cat-container class="block-container right"></div>
+</div>
+
+<!--#include virtual="${sitePath}app/templates.html" -->
+<!--#include virtual="${sitePath}demo/partials/footer-libs.html" -->
+</body>
+</html>
