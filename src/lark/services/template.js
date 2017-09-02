@@ -21,7 +21,6 @@ lark.addService('$template', [function () {
         Array.prototype.forEach.call(list, function(template){
             add(template.id, template.innerHTML);
         });
-        console.log("templates", templates);
     };
 
     /**

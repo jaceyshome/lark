@@ -1,20 +1,20 @@
-lark.addComponent('newCat', ['catService', function (catService) {
+lark.addComponent('newCat', ['taskService', function (taskService) {
     return function () {
         return {
             scope: {},
-            templateId: "component-new-cat-template",
+            templateId: "component-new-task-template",
             link: (function ($scope, $element) {
 
                 function reset() {
-                    $scope.newCat = {
+                    $scope.task = {
                         name: '',
                         src: ''
                     };
                 }
 
                 $scope.add = function () {
-                    if ($scope.newCat.name && $scope.newCat.src) {
-                        catService.cats.push($scope.newCat);
+                    if ($scope.task.name && $scope.task.src) {
+                        taskService.tasks.push($scope.newCat);
                         reset();
                     }
                 };

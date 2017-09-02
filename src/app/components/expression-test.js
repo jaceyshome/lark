@@ -1,23 +1,23 @@
-lark.addComponent('expressionTest', ['catService', function (catService) {
+lark.addComponent('expressionTest', ['taskService', function (taskService) {
     return function () {
         return {
             scope: {},
-            template: "<div>{{cats[0].fn('name',clickTimes)}}</div>",
+            template: "<div>{{tasks[0].fn('name',clickTimes)}}</div>",
             link: (function ($scope, $element) {
-                $scope.cats = [
+                $scope.tasks = [
                     {
-                        name: "lonely cat",
+                        name: "lonely task",
                         clickTimes: 3,
                         fn: function (string, clickTimes) {
                         },
                         children: ['black', 'white']
                     },
                     {
-                        name: 'funny cat',
+                        name: 'funny task',
                         counter: 4
                     },
                     {
-                        name: 'stone cat',
+                        name: 'stone task',
                         counter: 5
                     }
                 ];

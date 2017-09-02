@@ -1,13 +1,13 @@
-lark.addComponent('catContainer', ['catService', function (catService) {
+lark.addComponent('taskContainer', ['taskService', function (taskService) {
     return function () {
         return {
             scope: {},
-            templateId: "component-cat-container-template",
+            templateId: "component-task-container-template",
             link: (function ($scope, $element) {
-                $scope.catService = catService;
+                $scope.taskService = taskService;
                 $scope.showAdmin = false;
                 $scope.clickImage = function (e) {
-                    catService.currentCat && (catService.currentCat.counter += 1);
+                    taskService.currentCat && (taskService.currentCat.counter += 1);
                 };
                 $scope.toggle = function () {
                     $scope.showAdmin = !$scope.showAdmin;
