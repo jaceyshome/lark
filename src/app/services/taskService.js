@@ -89,7 +89,7 @@ lark.addService('taskService', [function () {
             return;
         }
 
-        if(_currentTask.id === candidate.toString()) {
+        if( _currentTask && _currentTask.id === candidate.toString()) {
             _currentTask = null;
         }
 

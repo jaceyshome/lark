@@ -8,7 +8,7 @@ lark.addComponent('taskDetails', ['taskService', function (taskService) {
                 function init() {
                     $scope.currentTask = null;
                     getCurrentTask();
-                    $scope.$on("UPDATE-CURRENT-TASK", getCurrentTask);
+                    // $scope.$on("UPDATE-CURRENT-TASK", getCurrentTask);
                 }
 
                 function getCurrentTask() {
@@ -16,7 +16,11 @@ lark.addComponent('taskDetails', ['taskService', function (taskService) {
                 }
 
                 $scope.save = function() {
-                    taskService.update($scope.currentTask);
+                    if($scope.currentTask.id == undefined) {
+                        taskService.add($scope.currentTask);
+                    } else {
+                        taskService.update($scope.currentTask);
+                    }
                     $scope.currentTask = null;
                 };
 
