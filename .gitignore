@@ -7,6 +7,10 @@ reports
 bower_components
 /templates
 
+output/
+reports/*.html
+reports/*.json
+
 # SCORM packages
 scorm.zip
 package.zip

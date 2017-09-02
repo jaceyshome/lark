@@ -77,7 +77,7 @@ function addSitePathVariable(file) {
             //add variable ${sitePath} to ssi include virtual path
             return '<!--#include virtual="'+ config.template.ssiIncludeVariable + includePath + '"';
         })
-        .replace(new RegExp('="(assets|src|app|..\/)\/(.+?)"', 'g'), function(match, p1, p2) {
+        .replace(new RegExp('="(assets|src|app|..\/)(\/.+?)"', 'g'), function(match, p1, p2) {
             //add variable <!--#echo var="sitePath" --> to assets path. e.g. src="assets/img/0.gif"
             return '="'+ config.template.assetSitePathVariable + p1 + p2 + '"';
         })

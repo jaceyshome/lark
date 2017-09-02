@@ -29,9 +29,8 @@ module.exports = {
     app: {
         src: [
             "src/app/app.js" ,
-            "src/app/services/catService.js" ,
-
-            "src/app/components/**/*.js" 
+            "src/app/services/**/*.js" ,
+            "src/app/components/**/*.js"
         ],
         dest: outputRoot + "app",
         template: {
