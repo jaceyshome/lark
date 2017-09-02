@@ -123,7 +123,7 @@ lark.addComponent('jsRepeat', [function () {
                                 }
                                 for (var i = 0, len = children.length; i < len; i++) {
                                     child = children[i];
-                                    if (items.indexOf(child[itemKey]) < 0) {
+                                    if (child != undefined && items.indexOf(child[itemKey]) < 0) {
                                         hasChanged = true;
                                         delete child[itemsKey];
                                         delete child[itemKey];

@@ -1,0 +1,27 @@
+<script type="text/x-lark-template" id="component-task-details-template">
+
+    <form data-js-if="currentTask">
+
+        <h3>{{currentTask.name}}</h3>
+
+        <div class="form-group">
+            <label for="taskName">Name</label>
+            <input class="form-control" data-js-model="currentTask.name" placeholder="Name" id="taskName"/>
+        </div>
+
+        <div class="form-group">
+            <label for="taskDescription">Description</label>
+            <input class="form-control" data-js-model="currentTask.description" placeholder="Description" id="taskDescription"/>
+        </div>
+
+        <div class="form-group">
+            <label for="taskEstimation">Name</label>
+            <input class="form-control" data-js-model="currentTask.estimation" placeholder="Estimation" id="taskEstimation"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary" data-js-click="save()">Save</button>
+    </form>
+
+</script>
+
+

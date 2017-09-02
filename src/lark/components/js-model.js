@@ -21,6 +21,7 @@ lark.addComponent('jsModel', [function () {
                             $scope.$update();
                         }
                         oldValue = e.target.value;
+                        e.target.focus();
                     };
                 })());
             })

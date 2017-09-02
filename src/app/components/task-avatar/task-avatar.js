@@ -6,13 +6,14 @@ lark.addComponent('taskAvatar', ['taskService', function (taskService) {
             },
             templateId: "component-task-avatar-template",
             link: (function ($scope, $element) {
-                $scope.clickImage = function (e) {
-                    taskService.currentCat = $scope.task;
+                $scope.editTask = function() {
+                    taskService.setCurrentTask($scope.task);
+                    $scope.$broadcast("UPDATE-CURRENT-TASK");
                 };
 
-                $scope.removeMe = function () {
-                    var index = taskService.tasks.indexOf($scope.task);
-                    taskService.tasks.splice(index, 1);
+                $scope.removeMe = function() {
+                    taskService.remove($scope.task.id);
+                    $scope.$broadcast("UPDATE-CURRENT-TASK");
                 }
 
             })

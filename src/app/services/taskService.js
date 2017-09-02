@@ -4,15 +4,19 @@ lark.addService('taskService', [function () {
     var _tasks = [
         {
             id: "dj24sf9d",
-            name: "task 1",
-            estimation: 5
+            name: "Aliquam erat",
+            description: "Pellentesque ut neque",
+            estimation: 2
         },
         {
             id: "lsf74ds0",
-            name: "task 2",
+            name: "Sed a libero",
+            description: "Praesent nonummy mie",
             estimation: 5
         }
     ];
+
+    var _currentTask = null;
 
     /**
      * List the task
@@ -31,7 +35,7 @@ lark.addService('taskService', [function () {
         if(candidate == undefined || candidate.id == undefined) {
             return candidate;
         }
-        var task = service.find(candidate.id);
+        var task = service.get(candidate.id);
         if(task == undefined) {
             return undefined;
         }
@@ -65,11 +69,12 @@ lark.addService('taskService', [function () {
         if(candidate == undefined) {
             return candidate;
         }
-        _tasks.forEach(function (task, index) {
-            if(task.id === candidate.toString()) {
-                return task;
+
+        for(var i=0; i<_tasks.length;i++){
+            if(_tasks[i].id === candidate.toString()){
+                return _tasks[i];
             }
-        });
+        }
 
         return undefined;
     };
@@ -80,16 +85,29 @@ lark.addService('taskService', [function () {
      * @returns {Array} - task list
      */
     service.remove = function(candidate) {
-        if(candidate == undefined || service.find(candidate) == undefined) {
+        if(candidate == undefined || service.get(candidate) == undefined) {
             return;
         }
+
+        if(_currentTask.id === candidate.toString()) {
+            _currentTask = null;
+        }
+
         _tasks.forEach(function(task, index){
             if(task.id === candidate.toString()) {
-                _tasks.splice(index,1);
+                _tasks.splice(index, 1);
                 return _tasks;
             }
         });
         return _tasks;
+    };
+
+    service.setCurrentTask = function(task){
+        _currentTask = task;
+    };
+
+    service.getCurrentTask = function(){
+        return _currentTask;
     };
 
     /**
