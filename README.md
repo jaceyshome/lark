@@ -385,5 +385,9 @@ Add router component to control router
 
 ## Acknowledgments ##
 Test framework uses  [Chimp.js](https://chimp.readme.io/)
+
 Release uses [gulp release](https://www.npmjs.com/package/gulp-release) package
+
 Demo application uses [Bootstrap](http://getbootstrap.com/)
+
+Expression service uses [Lodash](https://lodash.com/docs/4.17.4#template) template expression 
