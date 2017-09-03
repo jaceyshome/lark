@@ -336,6 +336,14 @@ The project uses nodejs `ssi` library to control server side include, the gulp t
 ### Manage dependencies ###
 This project simply uses gulp task to manage the source code dependency, `gulp build-lark` and `gulp build-app`. Those two tasks will concat the source files into `dist/lark.js` and `dist/app/app.js`, they register in `demo/partials/footer-libs.html` 
 
+
+## Test ##
+It uses [Chimp.js](https://chimp.readme.io/) to develop test case. Before run the test locally, you should start the local server by `gulp serve` or `gulp watch`
+The configuration file is `test.config.js` which has the global configuration and `chimp.conf.js` which has the default configuration.
+
+Add `@watch` tag in a feature or scenario, then run `chimp --watch`, you should see your chrome browser pops up
+Run `chimp` in terminal to run all test cases
+
 ## Release ##
 The project follows the git-flow methodology, uses [semver version numbers](http://semver.org/) and JSPM and Bower for distribution. Releases are created by merging `develop` to `master`, building the release code and tagging the `master` branch with a version number.
 
