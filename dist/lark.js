@@ -495,7 +495,6 @@ function Service(id) {
  * It doesn't support mathematical markup
  * {{2+2=4}}
  * {{number1 + number2}}
- *
  */
 lark.addService('$expression', ["$cache", function ($cache) {
 
@@ -675,6 +674,7 @@ lark.addService('$expression', ["$cache", function ($cache) {
 lark.addService('$refresh', [function () {
     var $refresh = {}, watchers = [];
 
+    //TODO should provide the scope parameter to limit the scanning
     $refresh.loop = function () {
         execScopeWatchers(lark.$rootScope);
     };
@@ -878,9 +878,10 @@ Scope.prototype.$destroy = function () {
             delete this[key];
         }
     }
+
+    //FIXME: for js-repeat component, it doesn't remove the scope just has watchers[0] and events[0]
     this.$off();
     this.$removeWatcher();
-
     //Remove the scope from the scope tree
     (this.$$parent != null) && this.$$parent.$removeChild(this);
 
@@ -1048,11 +1049,12 @@ Scope.prototype.$off = function (eventName, fn) {
 
 
 /**
- * hide and show component
+ * Hide and show component
  */
 lark.addComponent('jsHide', [function () {
     return function () {
         return {
+            //TODO provide ability to add custom show class and hide class
             scope: {
                 showClass: "="
             },
@@ -1062,7 +1064,7 @@ lark.addComponent('jsHide', [function () {
                     if (val) {
                         $element.style.display = 'none';
                     } else {
-                        $element.style.display = $scope.showClass || 'block';
+                        $element.style.display = 'block';
                     }
                 });
             })
@@ -1070,7 +1072,8 @@ lark.addComponent('jsHide', [function () {
     }
 }]);
 /**
- * Remove and Add the dom element
+ * Remove and Add the dom element base on the condition
+ * 
  */
 lark.addComponent('jsIf', [function () {
     return function () {
@@ -1126,7 +1129,7 @@ lark.addComponent('jsModel', [function () {
 /**
  * Data-js-repeat
  *
- * it instantiates a template once per item from a collection. Each template instance gets its own scope, where the given loop variable is set to the current collection item, and $index is set to the item index or key.
+ * It instantiates a html tempalte once per item from a collection or an array. Each instance gets its own scope, where the given loop variable is set to the current collection item, and $index is set to the item index or key.
  * @example
  * <ul>
  *      <li data-js-repeat="task in tasks" >
@@ -1314,6 +1317,7 @@ lark.addComponent('jsRepeat', [function () {
 lark.addComponent('jsShow', [function () {
     return function () {
         return {
+            //TODO provide ability to add custom show class and hide class
             scope: {
                 showClass: "="
             },
@@ -1321,7 +1325,7 @@ lark.addComponent('jsShow', [function () {
                 var expression = $element.getAttribute('js-show') || $element.getAttribute('data-js-show');
                 $scope.$watch(expression, function (val) {
                     if (val) {
-                        $element.style.display = $scope.showClass || 'block';
+                        $element.style.display = 'block';
                     } else {
                         $element.style.display = 'none';
                     }

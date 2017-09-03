@@ -1,6 +1,6 @@
 {
   "name": "lark",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Javascript framework",
   "main": "lark.js",
   "scripts": {
