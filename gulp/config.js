@@ -9,6 +9,7 @@ module.exports = {
     root: appRoot,
     outputRoot: outputRoot,
 
+    //Framework dependencies
     lark: {
         src: [
             //Index
@@ -26,10 +27,16 @@ module.exports = {
         dest: outputRoot
     },
 
+    //Application dependencies
     app: {
         src: [
+            //index
             "src/app/app.js" ,
+
+            //Services
             "src/app/services/**/*.js" ,
+
+            //Components
             "src/app/components/**/*.js"
         ],
         dest: outputRoot + "app",
@@ -62,5 +69,10 @@ module.exports = {
     minify: {
         src: outputRoot + "**/*.js",
         dest: outputRoot
+    },
+
+    esdoc: {
+        src: "src/lark/",
+        dest: outputRoot + "esdoc"
     }
 };

@@ -5,6 +5,7 @@
 lark.addService('$refresh', [function () {
     var $refresh = {}, watchers = [];
 
+    //TODO should provide the scope parameter to limit the scanning
     $refresh.loop = function () {
         execScopeWatchers(lark.$rootScope);
     };

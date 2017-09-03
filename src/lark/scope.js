@@ -140,9 +140,10 @@ Scope.prototype.$destroy = function () {
             delete this[key];
         }
     }
+
+    //FIXME: for js-repeat component, it doesn't remove the scope just has watchers[0] and events[0]
     this.$off();
     this.$removeWatcher();
-
     //Remove the scope from the scope tree
     (this.$$parent != null) && this.$$parent.$removeChild(this);
 

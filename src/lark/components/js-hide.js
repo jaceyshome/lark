@@ -1,9 +1,10 @@
 /**
- * hide and show component
+ * Hide and show component
  */
 lark.addComponent('jsHide', [function () {
     return function () {
         return {
+            //TODO provide ability to add custom show class and hide class
             scope: {
                 showClass: "="
             },
@@ -13,7 +14,7 @@ lark.addComponent('jsHide', [function () {
                     if (val) {
                         $element.style.display = 'none';
                     } else {
-                        $element.style.display = $scope.showClass || 'block';
+                        $element.style.display = 'block';
                     }
                 });
             })
