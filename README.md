@@ -376,3 +376,14 @@ Finally, push new release to remote master branch and push new release tag to re
 git push
 git push --tags
 ```
+
+
+## TODO ##
+Fix scope destroy doesn't handle empty scope for js-repeat component
+Add router component to control router
+
+
+## Acknowledgments ##
+Test framework uses  [Chimp.js](https://chimp.readme.io/)
+Release uses [gulp release](https://www.npmjs.com/package/gulp-release) package
+Demo application uses [Bootstrap](http://getbootstrap.com/)
