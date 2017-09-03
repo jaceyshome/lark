@@ -181,7 +181,190 @@ lark.addComponent('newTask', [function() {
 It provides the method `lark.$refresh.loop()` to scanner the whole scope tree, validate the binding properties and update the view. it is the same to call `$scope.$update()`. It uses for the situation when you want to manually update the view. In the future, it will provides the ability to update particular part of the scope tree.
 
 
-## Event handlers ##
+## Component Development ##
 
+### Develop a service ###
+Normally, you use a service to manage data used for different components or talk to the web server. 
+For example a `taskService`
+```
+lark.addService('taskService', ['HttpService', function (HttpService) {
+    var service = {};
 
-### Development ###
+    var _tasks = [];
+
+    service.list = function() {
+        _tasks = HttpService.fetchTasks()
+        ...
+        return _tasks;
+    };
+
+    service.update = function(candidate) { };
+
+    service.add = function(candidate) { };
+
+    service.get = function(candidate) { };
+
+    service.remove = function(candidate) {};
+    
+    return service;
+
+}]);
+```
+
+### Develop a component template ###
+The component template element has `type="text/x-lark-template"` for the `script` tag or (TODO)`data-type="text/x-lark-template"` for custom tag (`<div data-type="text/x-lark-template" >`) For example
+```
+<script type="text/x-lark-template" id="component-task-list-template">
+    <div class="container">
+        <div data-js-repeat="task in tasks" data-task-avatar data-task="task" style="margin-bottom: 20px;"></div>
+    </div>
+</script>
+```
+A component template can be shared with different controller. For this project, it is using gulp `build-template` task to concat all templates into single file `dist/app/templates.html`, which is included in the demo page with using ssi `<!--#include virtual="app/templates.html" -->`
+
+### Develop a component Controller ###
+A component controller controls the presentation logic. On components set up, it gets a new instance of the Scope object. An example
+```
+lark.addComponent('componentName', ['ServiceName', function (ServiceName) {
+       return function () {
+           return {
+               scope: { },     //configurable object
+               template: '',   //view template
+               link: (function ($scope, $element) {}) //controller
+           }
+       }
+   }]);
+```
+
+The `scope` parameter is a collection of Strings, it is optional, it collects optional properties in the component $scope object. You can use it to get and set the data between sharing scope components or set the configurable options for the component.
+
+Get and set the value between components like the parent and the child component.
+The value is the property of the parent $scope. For example
+
+Parent and child component templates
+```
+ <div data-parent-component >
+      <div data-child-component data-parent-name="name" >
+           {{parentName}}
+      </div>
+ </div>
+```
+Parent component
+```
+lark.addComponent('parentComponent', [function () {
+       return function () {
+           return {
+               link: (function ($scope, $element) {
+                   $scope.parentName = "radish";
+               })
+           }
+       }
+}]);
+```
+
+Child component 
+```
+lark.addComponent('childComponent', [function () {
+  return function () {
+      return {
+          scope: {
+              parentName: "="
+          },
+          link: (function ($scope, $element) {
+              console.log($scope.parentName); //Radish
+          })
+      }
+  }
+}]);
+```
+
+Get the value of the component scope
+```
+<div data-featured-panel data-colour="dark" class="{{panelClass}}">
+ ...
+</div>
+```
+
+Example
+```
+lark.addComponent('featuredPanel', [function () {
+  return function () {
+      return {
+          scope: {
+              colour: "="
+          },
+          link: (function ($scope, $element) {
+              if($scope.colour == "dark") {
+                  $scope.panelClass = "dark-panel";
+              }
+          })
+      }
+  }
+}]);
+```
+After initialisation, the rendered view is
+```
+<div data-featured-panel data-colour="dark" class="dark-panel">
+  ...
+</div>
+```
+
+### Develop a page ###
+The project uses nodejs `ssi` library to control server side include, the gulp task `gulp build-template` will set the `sitePathValue` and make partials ready in dist folder, for example the `dist/demo/index.html` 
+```
+<!--#set var="sitePath" value="<%=sitePathValue%>" -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Lark demo</title>
+    <!--#include virtual="demo/partials/head-libs.html" -->
+</head>
+
+<body>
+<div class="container" id="mainContainer">
+    application code 
+</div>
+
+<!--#include virtual="app/templates.html" -->
+<!--#include virtual="demo/partials/footer-libs.html" -->
+</body>
+</html>
+```
+
+### Manage dependencies ###
+This project simply uses gulp task to manage the source code dependency, `gulp build-lark` and `gulp build-app`. Those two tasks will concat the source files into `dist/lark.js` and `dist/app/app.js`, they register in `demo/partials/footer-libs.html` 
+
+## Release ##
+The project follows the git-flow methodology, uses [semver version numbers](http://semver.org/) and JSPM and Bower for distribution. Releases are created by merging `develop` to `master`, building the release code and tagging the `master` branch with a version number.
+
+First, check the latest develop branch is release-ready:
+
+```
+$ git checkout develop
+$ git pull
+$ git push
+```
+Then merge the release-ready code to master
+
+```
+$ git checkout master
+$ git pull
+$ git merge develop
+
+$ git commit
+```
+
+Then, while still on `master`, the process of building, updating version numbers and tagging the release can be done using `gulp release`. By default `gulp release` will increment the bugfix version, it supports `--bump` options are `major`, `minor`,  and `patch` but the major and minor versions can be incremented using the `--bump` flag, for example:
+
+```
+gulp release --bump patch
+```
+
+Finally, push new release to remote master branch and push new release tag to remote master branch. 
+
+```
+git push
+git push --tags
+```
