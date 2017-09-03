@@ -3,8 +3,6 @@ var runSequence = require('run-sequence');
 var sourcemaps = require('gulp-sourcemaps');
 var concat = require('gulp-concat');
 var config = require('../config');
-var esdoc = require("gulp-esdoc");
-
 
 //Concat lark framework
 gulp.task('build-lark', function() {
