@@ -1,5 +1,6 @@
 /**
- * Remove and Add the dom element
+ * Remove and Add the dom element base on the condition
+ * 
  */
 lark.addComponent('jsIf', [function () {
     return function () {

@@ -11,7 +11,6 @@
  * It doesn't support mathematical markup
  * {{2+2=4}}
  * {{number1 + number2}}
- *
  */
 lark.addService('$expression', ["$cache", function ($cache) {
 
